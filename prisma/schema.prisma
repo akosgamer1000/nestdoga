@@ -12,3 +12,17 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+model Jatek {
+  id Int @id @default(autoincrement())
+  name String
+  metarial String
+  veight Int
+  Child Child? @relation(fields: [id], references: [id])
+}
+model Child {
+  id Int @id @default(autoincrement())
+  nev String
+  address String
+  goodorbad Boolean
+  Jatek Jatek[]
+}
