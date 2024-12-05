@@ -17,7 +17,8 @@ model Jatek {
   name String
   metarial String
   veight Int
-  Child Child? @relation(fields: [id], references: [id])
+  ChildId Int
+  Child Child? @relation(fields: [ChildId], references: [id])
 }
 model Child {
   id Int @id @default(autoincrement())

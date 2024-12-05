@@ -50,4 +50,16 @@ export class ChildService {
       where: { id },
     });
   }
+  async addJatek(id: number, jatekId: number) {
+    return this.prisma.child.update({
+      where: { id },
+      data: { Jatek: { connect: { id: jatekId } } },
+    });
+  }
+  async removeJatek(id: number, jatekId: number) {
+    return this.prisma.child.update({
+      where: { id },
+      data: { Jatek: { disconnect: { id: jatekId } } },
+    });
+  }
 }
