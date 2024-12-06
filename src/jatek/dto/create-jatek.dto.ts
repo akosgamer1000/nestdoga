@@ -1,4 +1,4 @@
-import { IsIn, IsNumber, IsString } from "class-validator";
+import { IsIn, IsNumber, IsString, IsOptional } from "class-validator";
 
 export class CreateJatekDto {
     @IsString()
@@ -8,4 +8,7 @@ export class CreateJatekDto {
     metarial: string;
     @IsNumber()
     veight: number;
+    @IsOptional()
+    @IsNumber()
+    childId?: number;
 }

@@ -7,8 +7,15 @@ import { PrismaService } from 'src/prisma.service';
 export class JatekService {
   constructor(private prisma: PrismaService) {}
   create(createJatekDto: CreateJatekDto) {
+    const { childId, ...jatekData } = createJatekDto;
+    
     return this.prisma.jatek.create({
-      data: createJatekDto,
+        data: {
+            ...jatekData,
+            Child: childId ? {
+                connect: { id: childId }
+            } : undefined
+        }
     });
   }
 
@@ -45,7 +52,15 @@ export class JatekService {
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const exists = await this.prisma.jatek.findUnique({
+      where: { id },
+    });
+
+    if (!exists) {
+      throw new NotFoundException(`Jatek with ID ${id} not found`);
+    }
+
     return this.prisma.jatek.delete({
       where: { id },
     });

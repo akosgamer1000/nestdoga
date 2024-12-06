@@ -30,12 +30,13 @@ export class ChildService {
   }
 
   async update(id: number, updateChildDto: UpdateChildDto) {
+  
    
-    const existingChild = await this.prisma.child.findUnique({
+    const exists = await this.prisma.child.findUnique({
       where: { id },
     });
 
-    if (!existingChild) {
+    if (!exists) {
       throw new NotFoundException('Child not found');
     }
 
@@ -45,18 +46,58 @@ export class ChildService {
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    const exists = await this.prisma.child.findUnique({
+      where: { id },
+    });
+
+    if (!exists) {
+      throw new NotFoundException(`Child with ID ${id} not found`);
+    }
+
     return this.prisma.child.delete({
       where: { id },
     });
   }
   async addJatek(id: number, jatekId: number) {
+  
+    const exists = await this.prisma.child.findUnique({
+      where: { id },
+    });
+    const Exists2 = await this.prisma.jatek.findUnique({
+      where: { id: jatekId },
+    });
+    if (!exists) {
+      throw new NotFoundException(`Child with ID ${id} not found`);
+    }
+    if (!Exists2) {
+      throw new NotFoundException(`Jatek with ID ${jatekId} not found`);
+    }
+    const badorrggod=await this.prisma.child.findUnique({
+      where: { id },
+      select: {
+          goodorbad: true
+      },
+    });
+    if (badorrggod.goodorbad == false) {
+      throw new NotFoundException('this child is forbidden to get a gift');
+    }
+    
+
     return this.prisma.child.update({
       where: { id },
       data: { Jatek: { connect: { id: jatekId } } },
     });
   }
   async removeJatek(id: number, jatekId: number) {
+    
+    const exists = await this.prisma.child.findUnique({
+      where: { id },
+    });
+
+    if (!exists) {
+      throw new NotFoundException(`Child with ID ${id} not found`);
+    }
     return this.prisma.child.update({
       where: { id },
       data: { Jatek: { disconnect: { id: jatekId } } },

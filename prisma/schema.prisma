@@ -13,13 +13,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 model Jatek {
-  id Int @id @default(autoincrement())
-  name String
-  metarial String
-  veight Int
-  ChildId Int
-  Child Child? @relation(fields: [ChildId], references: [id])
+    id       Int     @id @default(autoincrement())
+    name     String
+    metarial String
+    veight   Int
+    Child    Child[]
 }
+
 model Child {
   id Int @id @default(autoincrement())
   nev String

@@ -3,4 +3,5 @@ export class Child {
     nev: string;
     address: string;
     goodorbad: boolean;
+    Jatek?: any[];
 }
